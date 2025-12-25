@@ -13,7 +13,7 @@ BLUE='\033[1;34m'
 NC='\033[0m'
 
 # CONFIGURACION
-REPO_URL="https://gitlab.com/reagensjp/reagens-scritp/-/raw/main"
+REPO_URL="https://raw.githubusercontent.com/Configuracao/HirvipHB/main"
 MENU_URL="${REPO_URL}/menu"
 REPARADOR_URL="${REPO_URL}/reparador.sh"
 MASTER_IP4="34.69.99.5"
