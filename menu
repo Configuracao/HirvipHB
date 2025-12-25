@@ -4311,7 +4311,7 @@ menu_ajustes() {
         echo -e " ${C_DATO}[8]  > SPEEDTEST OOKLA (VELOCIDAD)${C_RESET}"
         echo -e " ${C_DATO}[9]  > CENTRO DE SEGURIDAD PRO (ANTI-TORRENT)${C_RESET}"
         echo -e " ${C_DATO}[10] > ADBLOCK PRO (BLOQUEO ANUNCIOS)${C_RESET}"
-        echo -e " ${C_VERDE}[11] > INSTALAR PANEL WEB (R-VP - PRO)${C_RESET}"
+        echo -e " ${C_VERDE}[11] > INSTALAR PANEL WEB (HIRVIP - PRO)${C_RESET}"
         echo -e " ${C_VERDE}[12] > GENERAR CERTIFICADO SSL (DOMINIO)${C_RESET}"
         echo -e " ${C_DATO}[13] > MANTENIMIENTO Y RESPALDO 1A${C_RESET}"
         echo -e "${C_BARRA}=====================================================${C_RESET}"
@@ -4752,7 +4752,7 @@ fun_instalar_panel_web() {
     while true; do
         clear
         echo -e "${C_BARRA}=====================================================${C_RESET}"
-        msg_center "${C_TITULO} GESTION PANEL WEB R-VP (FINAL UI) ${C_RESET}"
+        msg_center "${C_TITULO} GESTION PANEL WEB HIRVIP (FINAL UI) ${C_RESET}"
         echo -e "${C_BARRA}=====================================================${C_RESET}"
         
         P_WEB_ACTUAL="8888"
@@ -4790,7 +4790,7 @@ fun_instalar_panel_web() {
                 echo -n " Ingrese Nuevo Puerto [Default 8888]: "
                 read P_WEB_NEW
                 [[ -z "$P_WEB_NEW" ]] && P_WEB_NEW="8888"
-                fun_check_port $P_WEB_NEW "Panel Web R-VP" || return
+                fun_check_port $P_WEB_NEW "Panel Web HIRVIP" || return
 
                 fuser -k $P_WEB_NEW/tcp >/dev/null 2>&1
                 if [[ "$P_WEB_NEW" == "80" ]]; then
@@ -5029,9 +5029,9 @@ th { background:#252525; color:#fff; }
 
 LAYOUT = """
 <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>R-VP MANAGER PRO</title>""" + CSS + """</head><body>
+<title>HIRVIP MANAGER PRO</title>""" + CSS + """</head><body>
 <div class="sidebar">
-    <h2 style="color:#fff; text-align:center; letter-spacing:2px;">R-VP <span style="color:#007bff;">PRO</span></h2>
+    <h2 style="color:#fff; text-align:center; letter-spacing:2px;">HIRVIP <span style="color:#007bff;">HB</span></h2>
     <hr style="border:0; border-top:1px solid #333; margin-bottom:20px;">
     <a href="/"><i class="fas fa-chart-line"></i> Dashboard</a>
     <a href="/ssh"><i class="fas fa-user-shield"></i> Usuarios SSH</a>
@@ -5051,7 +5051,7 @@ LAYOUT = """
 
 LOGIN_HTML = """
 <!DOCTYPE html><html><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Login R-VP</title>""" + CSS + """</head><body style="display:block;">
+<title>Login HIRVIP</title>""" + CSS + """</head><body style="display:block;">
 <div class="login-box">
     <h2 style="color:#007bff; margin-bottom:30px;">ACCESO SEGURO</h2>
     <form method="post">
@@ -5837,7 +5837,7 @@ END_SERVICE
 #!/bin/bash
 IP=\$(curl -s ipv4.icanhazip.com)
 PORT=$P_WEB_NEW
-echo -e "\033[1;32m R-VP ONLINE: \033[1;37mhttp://\$IP:\$PORT\033[0m"
+echo -e "\033[1;32m HIRVIP ONLINE: \033[1;37mhttp://\$IP:\$PORT\033[0m"
 CMD_EOF
                 chmod +x /usr/bin/r-vp
                 echo -e " ${C_DATO}Comando 'r-vp' instalado.${C_RESET}"
