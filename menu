@@ -28,7 +28,7 @@ fun_fix_permissions
 if [[ ! -f "/usr/bin/menu" ]]; then
     ln -s "$(readlink -f "$0")" /usr/bin/menu
     chmod +x /usr/bin/menu
-    # Opcional: Hacer que el menú abra solo al loguear
+    # Opcional: Hacer que el menï¿½ abra solo al loguear
     echo "menu" >> /root/.bashrc
 fi
 
@@ -106,11 +106,11 @@ if [[ ! -f "/etc/reagens/.install_check" ]]; then
     echo "Verificando dependencias por primera vez..."
     if [[ -f /etc/redhat-release ]]; then
     PM="yum"
-    # Paquetes específicos para la familia RedHat (Rocky/Alma/CentOS)
+    # Paquetes especï¿½ficos para la familia RedHat (Rocky/Alma/CentOS)
     PKG_LIST="jq psmisc bc nano git curl socat net-tools python3-pip iptables iptables-services lsof wget cmake make gcc unzip openssl bind-utils"
 else
     PM="apt-get"
-    # Paquetes específicos para la familia Debian (Ubuntu/Debian)
+    # Paquetes especï¿½ficos para la familia Debian (Ubuntu/Debian)
     PKG_LIST="jq psmisc bc nano git curl socat net-tools python3-pip iptables iptables-persistent lsof wget cmake make gcc build-essential unzip uuid-runtime openssl dnsutils"
 fi
 
@@ -128,7 +128,7 @@ msg_center() {
   local text="$1"
   local clean_text=$(echo -e "$text" | sed -r "s/\x1B\[([0-9]{1,2}(;[0-9]{1,2})?)?[mGK]//g")
   local len=${#clean_text}
-  local cols=53 # Ancho fijo para tu menú
+  local cols=53 # Ancho fijo para tu menï¿½
   local space=$(( ($cols - $len) / 2 ))
   [[ $space -lt 0 ]] && space=0
   printf "%${space}s" " "
@@ -140,18 +140,18 @@ fun_check_port() {
     local port=$1
     local service_name=$2
     
-    # Verifica si el puerto está siendo escuchado
+    # Verifica si el puerto estï¿½ siendo escuchado
     if lsof -Pi :$port -sTCP:LISTEN -t >/dev/null ; then
         local process=$(lsof -i :$port | awk 'NR==2 {print $1}')
-        echo -e "${C_ROJO}[X] ERROR: El puerto $port ya está ocupado por: $process.${C_RESET}"
-        echo -e "${C_DATO}[!] Detén ese servicio antes de instalar $service_name.${C_RESET}"
+        echo -e "${C_ROJO}[X] ERROR: El puerto $port ya estï¿½ ocupado por: $process.${C_RESET}"
+        echo -e "${C_DATO}[!] Detï¿½n ese servicio antes de instalar $service_name.${C_RESET}"
         return 1 # Puerto ocupado
     else
         return 0 # Puerto libre
     fi
 }
 
-# --- GUARDADO PERSISTENTE DE REGLAS (CORRECCIÓN DEFINITIVA) ---
+# --- GUARDADO PERSISTENTE DE REGLAS (CORRECCIï¿½N DEFINITIVA) ---
 fun_save_iptables() {
     if [[ -f /etc/redhat-release ]]; then
         # Para Rocky, Alma y CentOS
@@ -174,7 +174,7 @@ fun_gaming_pro() {
     msg_center "${C_TITULO} GAMING OPTIMIZER & EXTREMIN PRO ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     echo -e " Este sistema modifica el Kernel para reducir el Ping"
-    echo -e " y prioriza el tráfico de juegos en los túneles VPN."
+    echo -e " y prioriza el trï¿½fico de juegos en los tï¿½neles VPN."
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
     echo -e " ${C_TEXTO}[1] > ACTIVAR MODO GAMING (Latencia Cero)${C_RESET}"
     echo -e " ${C_TEXTO}[2] > DESACTIVAR Y VOLVER A CONFIG. ORIGINAL${C_RESET}"
@@ -192,7 +192,7 @@ fun_gaming_pro() {
             # Limpieza de etiquetas anteriores
             sed -i '/reagens_gaming/d' /etc/sysctl.conf
             
-            # Inyección de parámetros de red para Gaming
+            # Inyecciï¿½n de parï¿½metros de red para Gaming
             cat <<EOF >> /etc/sysctl.conf
 # reagens_gaming_start
 net.ipv4.tcp_fastopen = 3
@@ -212,7 +212,7 @@ EOF
             sysctl -p >/dev/null 2>&1
 
             echo -e " ${C_DATO}[+] Activando sistema EXTREMIN (Prioridad CPU)...${C_RESET}"
-            # Elevamos la prioridad de los procesos de túnel a nivel -15 (Casi tiempo real)
+            # Elevamos la prioridad de los procesos de tï¿½nel a nivel -15 (Casi tiempo real)
             for srv in sshd dropbear xray hysteria-server reagens-udp; do
                 PIDS=$(pgrep -x $srv)
                 for pid in $PIDS; do
@@ -220,7 +220,7 @@ EOF
                 done
             done
             
-            echo -e "${C_VERDE} ¡VPS OPTIMIZADA PARA GAMING EXITOSAMENTE!${C_RESET}"
+            echo -e "${C_VERDE} ï¿½VPS OPTIMIZADA PARA GAMING EXITOSAMENTE!${C_RESET}"
             sleep 3 ;;
             
         2)
@@ -228,9 +228,9 @@ EOF
             if [[ -f /etc/sysctl.conf.bak ]]; then
                 cp /etc/sysctl.conf.bak /etc/sysctl.conf
                 sysctl -p >/dev/null 2>&1
-                echo -e "${C_VERDE} Configuración original restaurada.${C_RESET}"
+                echo -e "${C_VERDE} Configuraciï¿½n original restaurada.${C_RESET}"
             else
-                echo -e "${C_ROJO} No se encontró backup de configuración.${C_RESET}"
+                echo -e "${C_ROJO} No se encontrï¿½ backup de configuraciï¿½n.${C_RESET}"
             fi
             sleep 2 ;;
         *) return ;;
@@ -273,13 +273,13 @@ while true; do
         
         while IFS='|' read -r user limit used state; do
             delta_bytes=0
-            # Solo buscar procesos si el usuario está activo
+            # Solo buscar procesos si el usuario estï¿½ activo
             if [[ "$state" == "1" ]] && id "$user" &>/dev/null; then
                 # Obtenemos PIDs de una sola vez para ahorrar CPU
                 pids=$(pgrep -u "$user" -f "sshd|dropbear")
                 for pid in $pids; do
                     if [[ -f "/proc/$pid/io" ]]; then
-                        # Leer rchar (bytes leídos) y wchar (bytes escritos)
+                        # Leer rchar (bytes leï¿½dos) y wchar (bytes escritos)
                         current_io=$(awk '/^rchar:|^wchar:/ { sum += $2 } END { print sum }' /proc/$pid/io)
                         
                         if [[ -f "$PID_DIR/$pid" ]]; then
@@ -291,10 +291,10 @@ while true; do
                 done
             fi
             
-            # Cálculo de MB consumidos (con factor de corrección 0.2)
+            # Cï¿½lculo de MB consumidos (con factor de correcciï¿½n 0.2)
             new_used=$(echo "$used + ($delta_bytes * 0.1)" | bc -l)
             
-            # Bloqueo automático por límite
+            # Bloqueo automï¿½tico por lï¿½mite
             new_state="$state"
             if [[ "$limit" -gt 0 ]] && (( $(echo "$new_used >= $limit" | bc -l) )); then
                  if [[ "$state" == "1" ]]; then
@@ -332,7 +332,7 @@ restore_traffic_rules() {
     fi
 }
 
-# 3. Función auxiliar para agregar usuarios al monitor (Persistencia añadida)
+# 3. Funciï¿½n auxiliar para agregar usuarios al monitor (Persistencia aï¿½adida)
 add_traffic_user() {
     local u=$1
     local mb=$2
@@ -354,7 +354,7 @@ obtener_datos() {
     DB_TOKENS="/etc/adm-lite/usuarios_token.db"
     DB_TRAFFIC="/etc/reagens/traffic.db"
 
-    # 1. CARGA DE CACHÉ (Lo que ve el usuario al instante)
+    # 1. CARGA DE CACHï¿½ (Lo que ve el usuario al instante)
     if [[ -f "$CACHE_STATS" ]]; then
         source "$CACHE_STATS"
     else
@@ -379,7 +379,7 @@ local ram_t=$(echo "$ram_out" | awk '{print $2}')
 local ram_u=$(echo "$ram_out" | awk '{print $3}')
 local ram_f=$(echo "$ram_out" | awk '{print $7}') # Available es la columna 7 en Linux modernos
 
-# Si la columna 7 está vacía, usamos la 4 (Free)
+# Si la columna 7 estï¿½ vacï¿½a, usamos la 4 (Free)
 [[ -z "$ram_f" ]] && ram_f=$(echo "$ram_out" | awk '{print $4}')
 
 RAM_TOTAL="${ram_t}Mi"
@@ -406,7 +406,7 @@ RAM_PERC=$(( (ram_u * 100) / ram_t ))"%"
         NEW_IP=$(cat /tmp/ip_cache 2>/dev/null); NEW_IP=${NEW_IP:0:15}
 
         # ONLINE (Procesos sshd/dropbear reales)
-        # COPIA ESTA VERSIÓN PARA MAYOR PRECISIÓN EN ROCKY:
+        # COPIA ESTA VERSIï¿½N PARA MAYOR PRECISIï¿½N EN ROCKY:
 # --- ONLINE (FIX PARA ELIMINAR CONEXIONES FANTASMA) ---
         NEW_ONLI=0
         if [[ -f "$DB_SSH" || -f "$DB_TOKENS" ]]; then
@@ -424,7 +424,7 @@ RAM_PERC=$(( (ram_u * 100) / ram_t ))"%"
 for user in $USR_LIST; do
     # Verificamos si el usuario tiene procesos ssh o dropbear activos
     if pgrep -u "$user" -f "sshd|dropbear" >/dev/null 2>&1; then
-        # Contamos cuántas conexiones tiene ese usuario
+        # Contamos cuï¿½ntas conexiones tiene ese usuario
         count=$(ps -u "$user" -f | grep -E "sshd|dropbear" | grep -v "grep" | wc -l)
         NEW_ONLI=$((NEW_ONLI + count))
     fi
@@ -516,7 +516,7 @@ fun_speedtest() {
             URL="https://install.speedtest.net/app/cli/ookla-speedtest-1.2.0-linux-x86_64.tgz"
         fi
 
-        # Descarga e instalación manual (bypass de apt)
+        # Descarga e instalaciï¿½n manual (bypass de apt)
         wget -qO speedtest.tgz "$URL"
         tar -xzf speedtest.tgz speedtest
         sudo mv speedtest /usr/bin/
@@ -609,10 +609,10 @@ fun_crear_usuario() {
     def_pass=$(obtener_clave_default)
     if [[ ! -z "$def_pass" ]]; then
         echo -e " Clave Default: ${C_DATO}$def_pass${C_RESET}"
-        echo -n " Contraseña (Enter para Default): "; read p
+        echo -n " Contraseï¿½a (Enter para Default): "; read p
         [[ -z "$p" ]] && p="$def_pass"
     else
-        echo -n " Contraseña: "; read p
+        echo -n " Contraseï¿½a: "; read p
     fi
     if [[ -z "$p" ]]; then echo "Error: Clave vacia"; sleep 2; return; fi
     
@@ -661,7 +661,7 @@ fun_detalles_usuarios() {
             fi
         done < "$DB_SSH"
     else
-        echo " Base de datos vacía."
+        echo " Base de datos vacï¿½a."
     fi
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     read -p " Presiona Enter para salir..."
@@ -737,7 +737,7 @@ fun_eliminar_vencidos_ssh() {
                 
                 # Si la fecha es valida y ya paso
                 if [[ ! -z "$exp_sec" && $today_sec -ge $exp_sec ]]; then
-                    echo -e "${C_ROJO} Eliminando: $user (Venció: $exp)${C_RESET}"
+                    echo -e "${C_ROJO} Eliminando: $user (Venciï¿½: $exp)${C_RESET}"
                     userdel --force "$user" 2>/dev/null
                     rm -f "/etc/reagens/users/$user"
                     sed -i "/^$user|/d" "$DB_TRAFFIC"
@@ -822,7 +822,7 @@ fun_editar_usuario() {
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     echo -e " EDITAR USUARIO: ${C_VERDE}$USER_SEL${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e " [1] Cambiar Contraseña"
+    echo -e " [1] Cambiar Contraseï¿½a"
     echo -e " [2] Cambiar Limite de Conexiones"
     echo -e " [3] Cambiar Limite MB (Trafico)"
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
@@ -835,12 +835,12 @@ fun_editar_usuario() {
 
     case $op_edit in
         1)
-            echo -n " Nueva Contraseña: "
+            echo -n " Nueva Contraseï¿½a: "
             read new_pass
             if [[ -z "$new_pass" ]]; then echo "Cancelado"; sleep 1; return; fi
             echo "$USER_SEL:$new_pass" | chpasswd
             p=$new_pass
-            echo -e "${C_VERDE} Contraseña cambiada.${C_RESET}"
+            echo -e "${C_VERDE} Contraseï¿½a cambiada.${C_RESET}"
             ;;
         2)
             echo -n " Nuevo Limite Conexiones (0=Inf): "
@@ -938,7 +938,7 @@ fun_bloqueo_usuario() {
     
     if [[ "$status" == "L" ]]; then
         echo -e " El usuario esta ${C_ROJO}BLOQUEADO${C_RESET}"
-        echo -n " ¿Desbloquear? (s/n): "
+        echo -n " ï¿½Desbloquear? (s/n): "
         read op
         if [[ "$op" == "s" ]]; then
             passwd -u "$USER_SEL"
@@ -946,7 +946,7 @@ fun_bloqueo_usuario() {
         fi
     else
         echo -e " El usuario esta ${C_VERDE}ACTIVO${C_RESET}"
-        echo -n " ¿Bloquear? (s/n): "
+        echo -n " ï¿½Bloquear? (s/n): "
         read op
         if [[ "$op" == "s" ]]; then
             passwd -l "$USER_SEL"
@@ -963,7 +963,7 @@ fun_banner() {
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     msg_center "${C_TITULO} CONFIGURAR BANNER SSH ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e " Se abrirá el editor de texto."
+    echo -e " Se abrirï¿½ el editor de texto."
     echo -e " Escribe tu mensaje HTML/Texto y guarda con: Ctrl+O, Enter, Ctrl+X"
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
     read -p " Presiona Enter para editar..."
@@ -987,7 +987,7 @@ menu_ssh() {
         echo -e "${C_BARRA}=====================================================${C_RESET}"
         echo -e " ${C_TEXTO}[1]  > CREAR NUEVO USUARIO${C_RESET}"
         echo -e " ${C_TEXTO}[2]  > ELIMINAR USUARIO${C_RESET}"  
-        echo -e " ${C_TEXTO}[3]  > EDITAR USUARIO (Sumar Días/MB)${C_RESET}" # <-- Llama a fun_editar_usuario
+        echo -e " ${C_TEXTO}[3]  > EDITAR USUARIO (Sumar Dï¿½as/MB)${C_RESET}" # <-- Llama a fun_editar_usuario
         echo -e " ${C_TEXTO}[4]  > RENOVAR USUARIO (Acumulativo)${C_RESET}"  # <-- Llama a fun_renovar_usuario
         echo -e " ${C_TEXTO}[5]  > BLOQUEAR / DESBLOQUEAR (Lista)${C_RESET}" # <-- Llama a fun_bloqueo_usuario
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
@@ -1023,38 +1023,38 @@ menu_ssh() {
 }
 
 # ==================================================
-# BLOQUE GESTION TOKENS (DISEÑO CLASICO + LOGICA FIX)
+# BLOQUE GESTION TOKENS (DISEï¿½O CLASICO + LOGICA FIX)
 # ==================================================
 
 # Aseguramos variables clave
 DB_TOKENS="/etc/adm-lite/usuarios_token.db"
 TOKEN_PASS_FILE="/etc/reagens_base_pass"
 
-# 1. FUNCION DE CONTRASEÑA (CRITICA)
+# 1. FUNCION DE CONTRASEï¿½A (CRITICA)
 check_base_pass() {
     if [ ! -f "$TOKEN_PASS_FILE" ]; then
         clear
         echo -e "${C_BARRA}=====================================================${C_RESET}"
-        echo -e "${C_DATO} ¡CONFIGURACION INICIAL TOKEN ID!${C_RESET}"
-        echo -e " Esta App usa una contraseña fija interna para todos."
-        echo -e " Necesito saber cuál es esa contraseña."
+        echo -e "${C_DATO} ï¿½CONFIGURACION INICIAL TOKEN ID!${C_RESET}"
+        echo -e " Esta App usa una contraseï¿½a fija interna para todos."
+        echo -e " Necesito saber cuï¿½l es esa contraseï¿½a."
         echo -e "${C_BARRA}=====================================================${C_RESET}"
-        read -p " Introduce la CONTRASEÑA BASE de la APK: " BASE_PASS
+        read -p " Introduce la CONTRASEï¿½A BASE de la APK: " BASE_PASS
         if [[ -z "$BASE_PASS" ]]; then echo "Error: vacio"; return; fi
         echo "$BASE_PASS" > "$TOKEN_PASS_FILE"
-        echo -e "${C_VERDE}Contraseña guardada.${C_RESET}"; sleep 2
+        echo -e "${C_VERDE}Contraseï¿½a guardada.${C_RESET}"; sleep 2
     fi
 }
 
 change_base_pass() {
     clear
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e "${C_ROJO} CUIDADO: Esto afectará a los nuevos usuarios.${C_RESET}"
+    echo -e "${C_ROJO} CUIDADO: Esto afectarï¿½ a los nuevos usuarios.${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    read -p " Nueva contraseña base de la APK: " NUEVA_PASS
+    read -p " Nueva contraseï¿½a base de la APK: " NUEVA_PASS
     if [[ -z "$NUEVA_PASS" ]]; then echo "Cancelado"; sleep 1; return; fi
     echo "$NUEVA_PASS" > "$TOKEN_PASS_FILE"
-    echo -e "${C_VERDE}Contraseña actualizada.${C_RESET}"; sleep 2
+    echo -e "${C_VERDE}Contraseï¿½a actualizada.${C_RESET}"; sleep 2
 }
 
 # 2. SELECTOR DE USUARIO (SOLUCION DEL PROBLEMA)
@@ -1228,14 +1228,14 @@ bloqueo_token_func() {
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     if [[ "$status" == "L" ]]; then
         echo -e " Estado: ${C_ROJO}BLOQUEADO${C_RESET}"
-        echo -n " ¿Desbloquear? (s/n): "; read op
+        echo -n " ï¿½Desbloquear? (s/n): "; read op
         if [[ "$op" == "s" ]]; then
             passwd -u "$USER_SEL"
             echo -e "${C_VERDE} Token Activado.${C_RESET}"
         fi
     else
         echo -e " Estado: ${C_VERDE}ACTIVO${C_RESET}"
-        echo -n " ¿Bloquear? (s/n): "; read op
+        echo -n " ï¿½Bloquear? (s/n): "; read op
         if [[ "$op" == "s" ]]; then
             passwd -l "$USER_SEL"
             pkill -u "$USER_SEL"
@@ -1303,7 +1303,7 @@ fun_monitor_tokens() {
     done
 }
 
-# 8. MENU PRINCIPAL TOKENS (DISEÑO RESTAURADO)
+# 8. MENU PRINCIPAL TOKENS (DISEï¿½O RESTAURADO)
 menu_tokens() {
     while true; do
         clear
@@ -1322,7 +1322,7 @@ menu_tokens() {
         echo -e " ${C_TEXTO}[7]   > ELIMINAR TOKENS VENCIDOS${C_RESET}"
         echo -e " ${C_ROJO}[8]   > ELIMINAR TODOS LOS TOKENS${C_RESET}"
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
-        echo -e " ${C_DATO}[9]   > CAMBIAR CONTRASEÑA BASE (APP)${C_RESET}"
+        echo -e " ${C_DATO}[9]   > CAMBIAR CONTRASEï¿½A BASE (APP)${C_RESET}"
         echo -e "${C_BARRA}=====================================================${C_RESET}"
         echo -e " ${C_TEXTO}0) VOLVER${C_RESET}"
         echo -n " Opcion: "; read op
@@ -1422,22 +1422,22 @@ crear_usuario_v2ray() {
         echo -e "${C_ROJO} El usuario ya existe.${C_RESET}"; sleep 2; return
     fi
     
-    echo -n " Dias de Duración: "; read dias
+    echo -n " Dias de Duraciï¿½n: "; read dias
     [[ -z "$dias" ]] && dias=30
     
     uuid=$(uuidgen)
     final_date=$(date -d "+$dias days" +%Y-%m-%d)
     
     # --- INYECCION INTELIGENTE ---
-    # Detectamos cuántas entradas (inbounds) hay y añadimos el usuario a TODAS.
+    # Detectamos cuï¿½ntas entradas (inbounds) hay y aï¿½adimos el usuario a TODAS.
     total_inbounds=$(jq '.inbounds | length' "$CONF")
     
-    echo -e " ${C_DATO}Añadiendo a $total_inbounds puertos activos...${C_RESET}"
+    echo -e " ${C_DATO}Aï¿½adiendo a $total_inbounds puertos activos...${C_RESET}"
     
     for ((i=0; i<$total_inbounds; i++)); do
         PROTO=$(jq -r ".inbounds[$i].protocol" "$CONF")
         
-        # Estructura del cliente según el protocolo
+        # Estructura del cliente segï¿½n el protocolo
         if [[ "$PROTO" == "vmess" ]]; then
             jq --arg u "$uuid" --arg e "$user" \
             ".inbounds[$i].settings.clients += [{\"id\": \$u, \"alterId\": 0, \"email\": \$e}]" \
@@ -1551,7 +1551,7 @@ detalles_usuario_v2ray() {
                 ;;
         esac
 
-        # Si hay TLS estándar, intentar sacar el SNI del certificado o usar la IP
+        # Si hay TLS estï¿½ndar, intentar sacar el SNI del certificado o usar la IP
         if [[ "$P_SEC" == "tls" && -z "$P_SNI" ]]; then
              # Si no hay SNI definido en config, asumimos que el usuario debe ponerlo o es la IP (si tiene dominio)
              P_SNI="" 
@@ -1610,7 +1610,7 @@ detalles_usuario_v2ray() {
             LINK+="#$NAME"
         fi
 
-        echo -e " ${C_DATO}Opción #$((i+1)): ${C_VERDE}$P_PROTO + $P_NET ($P_SEC)${C_RESET}"
+        echo -e " ${C_DATO}Opciï¿½n #$((i+1)): ${C_VERDE}$P_PROTO + $P_NET ($P_SEC)${C_RESET}"
         echo -e " ${C_TEXTO}$LINK${C_RESET}"
         echo ""
         
@@ -1619,7 +1619,7 @@ detalles_usuario_v2ray() {
     done
     
     if command -v qrencode &> /dev/null; then 
-        echo -e " ${C_DATO}QR (Primera Opción):${C_RESET}"
+        echo -e " ${C_DATO}QR (Primera Opciï¿½n):${C_RESET}"
         qrencode -t ANSIUTF8 "$LINK_QR"
     fi
     
@@ -1688,7 +1688,7 @@ renovar_usuario_v2ray() {
     meta_file="$DB_USERS/v2ray/$USER_V2"
     source "$meta_file"
     if [[ -z "$DURATION" ]]; then
-        echo -n " Ingrese días a renovar (Ej: 30): "
+        echo -n " Ingrese dï¿½as a renovar (Ej: 30): "
         read DURATION
         echo "DURATION=$DURATION" >> "$meta_file"
     fi
@@ -1712,7 +1712,7 @@ renovar_usuario_v2ray() {
     sleep 3
 }
 
-# --- NUEVA FUNCIÓN: CAMBIAR PUERTO XRAY (SOPORTE DUAL) ---
+# --- NUEVA FUNCIï¿½N: CAMBIAR PUERTO XRAY (SOPORTE DUAL) ---
 cambiar_puerto_v2ray() {
     clear
     echo -e "${C_BARRA}=====================================================${C_RESET}"
@@ -1720,11 +1720,11 @@ cambiar_puerto_v2ray() {
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     
     if [[ ! -f "$V2RAY_CONF" ]]; then
-        echo -e " ${C_ROJO}[X] Error: Configuración no encontrada.${C_RESET}"
+        echo -e " ${C_ROJO}[X] Error: Configuraciï¿½n no encontrada.${C_RESET}"
         sleep 2; return
     fi
 
-    # 1. Detectar cuántos inbounds (servicios) hay
+    # 1. Detectar cuï¿½ntos inbounds (servicios) hay
     NUM_INB=$(jq '.inbounds | length' "$V2RAY_CONF")
     INDEX=0
 
@@ -1736,12 +1736,12 @@ cambiar_puerto_v2ray() {
             echo -e " [ $((i+1)) ] -> Puerto: ${C_DATO}$P${C_RESET} | Protocolo: ${C_DATO}$PR${C_RESET}"
         done
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
-        echo -n " ¿Cuál puerto desea cambiar? (1 o 2): "
+        echo -n " ï¿½Cuï¿½l puerto desea cambiar? (1 o 2): "
         read OP_SEL
         
-        # Validar selección
+        # Validar selecciï¿½n
         if [[ "$OP_SEL" == "1" ]]; then INDEX=0; elif [[ "$OP_SEL" == "2" ]]; then INDEX=1; else
-            echo -e "${C_ROJO}[!] Opción inválida.${C_RESET}"; sleep 2; return
+            echo -e "${C_ROJO}[!] Opciï¿½n invï¿½lida.${C_RESET}"; sleep 2; return
         fi
     fi
 
@@ -1754,14 +1754,14 @@ cambiar_puerto_v2ray() {
     read NEW_PORT
     
     if [[ -z "$NEW_PORT" || ! "$NEW_PORT" =~ ^[0-9]+$ ]]; then
-        echo -e "${C_ROJO}[!] Puerto inválido.${C_RESET}"; sleep 2; return
+        echo -e "${C_ROJO}[!] Puerto invï¿½lido.${C_RESET}"; sleep 2; return
     fi
 
-    # Verificar si el puerto nuevo está ocupado
+    # Verificar si el puerto nuevo estï¿½ ocupado
     fun_check_port $NEW_PORT "Xray Dual Fix" || return
 
-    # 3. Aplicar cambio con JQ usando el índice seleccionado
-    echo -e " ${C_DATO}[+] Actualizando JSON en la posición $INDEX...${C_RESET}"
+    # 3. Aplicar cambio con JQ usando el ï¿½ndice seleccionado
+    echo -e " ${C_DATO}[+] Actualizando JSON en la posiciï¿½n $INDEX...${C_RESET}"
     jq --argjson idx "$INDEX" --argjson p "$NEW_PORT" '.inbounds[$idx].port = $p' "$V2RAY_CONF" > "$V2RAY_CONF.tmp" && mv "$V2RAY_CONF.tmp" "$V2RAY_CONF"
 
     # 4. Actualizar Firewall
@@ -1962,7 +1962,7 @@ add_hysteria_user() {
     [[ -z "$u" ]] && return
     if [[ -f "$HY_USERS_DB/$u" ]]; then echo "Existe"; sleep 1; return; fi
     
-    echo -n " Contraseña: "
+    echo -n " Contraseï¿½a: "
     read p
     [[ -z "$p" ]] && return
     
@@ -2119,7 +2119,7 @@ fun_force_smart() {
     msg_center "${C_TITULO} PROTOCOLO DE EMERGENCIA UNIVERSAL REAGENS ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
 
-    # 1. DETECCIÓN DE ENTORNO
+    # 1. DETECCIï¿½N DE ENTORNO
     if [ -f /etc/os-release ]; then
         . /etc/os-release
         OS_ID=$ID
@@ -2131,7 +2131,7 @@ fun_force_smart() {
     echo -e " ${C_DATO}[1] Detectado: $NAME ($VERSION_ID)${C_RESET}"
     echo -e " ${C_DATO}[2] Instalando herramientas necesarias...${C_RESET}"
 
-    # 2. INSTALACIÓN DE DEPENDENCIAS SEGÚN SO
+    # 2. INSTALACIï¿½N DE DEPENDENCIAS SEGï¿½N SO
     case "$OS_ID" in
         ubuntu|debian)
             apt-get update -y >/dev/null 2>&1
@@ -2159,7 +2159,7 @@ fun_force_smart() {
         echo -e "     No se encontraron procesos bloqueando otros puertos."
     fi
 
-    # 4. CREACIÓN DEL PROXY PYTHON (WS-FIX)
+    # 4. CREACIï¿½N DEL PROXY PYTHON (WS-FIX)
     echo -e " ${C_DATO}[4] Configurando Websocket Proxy (Puerto 80 -> 22)...${C_RESET}"
     mkdir -p /etc/reagens/bin
 
@@ -2198,7 +2198,7 @@ def main():
 if __name__ == '__main__': main()
 EOF
 
-    # 5. GESTIÓN DEL SERVICIO SYSTEMD
+    # 5. GESTIï¿½N DEL SERVICIO SYSTEMD
     echo -e " ${C_DATO}[5] Desplegando servicio systemd...${C_RESET}"
 cat <<EOF > /etc/systemd/system/ws-reagens.service
 [Unit]
@@ -2231,12 +2231,12 @@ EOF
     iptables -I INPUT -p tcp --dport 80 -j ACCEPT
     iptables -I INPUT -p tcp --dport 22 -j ACCEPT
 
-    # 7. DIAGNÓSTICO FINAL
+    # 7. DIAGNï¿½STICO FINAL
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
     if netstat -tuln | grep -q ":80 "; then
         echo -e " ${C_VERDE}[OK] Reagens Proxy activo en puerto 80.${C_RESET}"
     else
-        echo -e " ${C_ROJO}[!] Error: El puerto 80 no levantó.${C_RESET}"
+        echo -e " ${C_ROJO}[!] Error: El puerto 80 no levantï¿½.${C_RESET}"
     fi
     echo -e " Registro guardado en: /tmp/reagens_ports.log"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
@@ -2286,7 +2286,7 @@ fun_python_sock() {
     [[ -z "$p_py" ]] && p_py=80
 
     # === MEJORA INTEGRADA: VALIDACION DE PUERTO ===
-    # Si el puerto está en uso, mostrará error y cancelará la instalación
+    # Si el puerto estï¿½ en uso, mostrarï¿½ error y cancelarï¿½ la instalaciï¿½n
     fun_check_port $p_py "Python WebSocket" || return
     # ==============================================
     
@@ -2368,7 +2368,7 @@ fun_instalar_ws_epro() {
     if [[ -z "$P_LOCAL" ]]; then P_LOCAL=8080; fi
 
     # 2. DEFINIR PUERTO DE SALIDA (DESTINO)
-    echo -e "\n ${C_DATO}[2] Puerto de SALIDA (A donde redirige el tráfico)${C_RESET}"
+    echo -e "\n ${C_DATO}[2] Puerto de SALIDA (A donde redirige el trï¿½fico)${C_RESET}"
     echo -e " Ejemplos: 22 (SSH), 443 (SSL), 1194 (OVPN)"
     echo -n " Ingrese Puerto (Default 22): "
     read P_TARGET
@@ -2669,7 +2669,7 @@ fun_ssl_menu() {
         echo -e " Puertos activos: ${C_DATO}${PORTS:-Ninguno}${C_RESET}"
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
         echo -e " [1] Agregar Nuevo Puerto SSL"
-        echo -e " [2] Limpiar Configuración y Desinstalar"
+        echo -e " [2] Limpiar Configuraciï¿½n y Desinstalar"
     else
         echo -e " Estado: ${C_ROJO}NO INSTALADO${C_RESET}"
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
@@ -2797,11 +2797,11 @@ fun_slowdns_menu() {
         # Verificar estado real
         if systemctl is-active --quiet slowdns-server; then
             STATUS_SD="${C_VERDE}ACTIVO${C_RESET}"
-            # Leer configuración actual del servicio
+            # Leer configuraciï¿½n actual del servicio
             SVC_FILE="/etc/systemd/system/slowdns-server.service"
-            # Extraer el dominio (penúltimo argumento)
+            # Extraer el dominio (penï¿½ltimo argumento)
             CURR_NS=$(grep "ExecStart" $SVC_FILE 2>/dev/null | awk '{print $(NF-1)}')
-            # Extraer el target (último argumento)
+            # Extraer el target (ï¿½ltimo argumento)
             CURR_TARGET=$(grep "ExecStart" $SVC_FILE 2>/dev/null | awk '{print $NF}')
         else
             STATUS_SD="${C_ROJO}DETENIDO${C_RESET}"
@@ -2930,13 +2930,13 @@ EOF
                     sleep 2
                     
                     if systemctl is-active --quiet slowdns-server; then
-                        echo -e "\n${C_VERDE} ¡INSTALADO CORRECTAMENTE!${C_RESET}"
+                        echo -e "\n${C_VERDE} ï¿½INSTALADO CORRECTAMENTE!${C_RESET}"
                         echo -e " Escuchando en: Puerto 53 (UDP)"
                         echo -e " Redirigiendo a: 127.0.0.1:$TARGET_PORT"
-                        echo -e " Tu llave pública es: "
+                        echo -e " Tu llave pï¿½blica es: "
                         echo -e "${C_DATO}$(cat $SLOWDNS_DIR/server.pub)${C_RESET}"
                     else
-                        echo -e "\n${C_ROJO} ERROR CRÍTICO: El servicio sigue sin arrancar.${C_RESET}"
+                        echo -e "\n${C_ROJO} ERROR CRï¿½TICO: El servicio sigue sin arrancar.${C_RESET}"
                         journalctl -u slowdns-server -n 5 --no-pager
                     fi
                     read -p " Enter para continuar..."
@@ -3073,7 +3073,7 @@ generar_json_inbound() {
              TLS_S="\"tlsSettings\": { \"serverName\": \"$P_DOMAIN_VPS\", \"certificates\": [ { \"certificateFile\": \"/etc/reagens/cert/public.crt\", \"keyFile\": \"/etc/reagens/cert/private.key\" } ] },"
         else
              echo -e " ${C_ROJO}Alerta: No hay certificados en /etc/reagens/cert.${C_RESET}"
-             echo -e " Se configurará, pero Xray podría fallar si no los generas."
+             echo -e " Se configurarï¿½, pero Xray podrï¿½a fallar si no los generas."
              TLS_S="\"tlsSettings\": { \"serverName\": \"$P_DOMAIN_VPS\" },"
         fi
 
@@ -3144,7 +3144,7 @@ proto_v2ray_manager() {
     INBOUND_FINAL="$INBOUND_1"
     
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
-    echo -e " ${C_DATO}¿Desea agregar un Segundo Puerto/Protocolo? (Dual)${C_RESET}"
+    echo -e " ${C_DATO}ï¿½Desea agregar un Segundo Puerto/Protocolo? (Dual)${C_RESET}"
     echo -n " [s/n]: "
     read op_dual
     
@@ -3192,7 +3192,7 @@ EOF
     systemctl enable xray >/dev/null 2>&1
 
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e "${C_VERDE} ¡INSTALACION COMPLETADA!${C_RESET}"
+    echo -e "${C_VERDE} ï¿½INSTALACION COMPLETADA!${C_RESET}"
     echo -e " Modo: $TXT_INFO"
     echo -e " Puertos Activos: ${C_DATO}$PORTS${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
@@ -3204,7 +3204,7 @@ EOF
 fun_puerto_espejo() {
     MIRROR_SVC="/etc/systemd/system/socat-mirror.service"
     
-    # Intenta leer la configuración actual del servicio
+    # Intenta leer la configuraciï¿½n actual del servicio
     P_OPEN="?"
     P_TARGET="?"
     if systemctl is-active --quiet socat-mirror; then
@@ -3236,7 +3236,7 @@ fun_puerto_espejo() {
             echo -e " CLON: ${C_DATO}Puerto $P_OPEN imita al $P_TARGET${C_RESET}"
         else
              echo -e " ESTADO: $STATUS_MIRROR"
-             echo -e " NOTA: Asegúrate que el Puerto $P_TARGET esté activo (ej: Python Socket en 80)."
+             echo -e " NOTA: Asegï¿½rate que el Puerto $P_TARGET estï¿½ activo (ej: Python Socket en 80)."
         fi
         
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
@@ -3259,7 +3259,7 @@ fun_puerto_espejo() {
                     systemctl daemon-reload
                     iptables -D INPUT -p tcp --dport $P_OPEN -j ACCEPT 2>/dev/null
                     fun_save_iptables >/dev/null 2>&1
-                    echo -e "${C_ROJO} Servicio de Clonación Eliminado.${C_RESET}"
+                    echo -e "${C_ROJO} Servicio de Clonaciï¿½n Eliminado.${C_RESET}"
                     sleep 2
                 else
                     # CREAR E INICIAR
@@ -3273,7 +3273,7 @@ fun_puerto_espejo() {
                     read P_ORIG
                     [[ -z "$P_ORIG" ]] && P_ORIG=80
                     
-                    echo -n " Puerto NUEVO (El que usará tu App) [Default 90]: "
+                    echo -n " Puerto NUEVO (El que usarï¿½ tu App) [Default 90]: "
                     read P_NEW
                     [[ -z "$P_NEW" ]] && P_NEW=90
 
@@ -3285,7 +3285,7 @@ After=network.target
 
 [Service]
 Type=simple
-# El puerto de entrada escucha y reenvía al puerto original (loopback 127.0.0.1)
+# El puerto de entrada escucha y reenvï¿½a al puerto original (loopback 127.0.0.1)
 ExecStart=/usr/bin/socat TCP-LISTEN:$P_NEW,fork,reuseaddr TCP:127.0.0.1:$P_ORIG
 Restart=always
 RestartSec=3
@@ -3304,7 +3304,7 @@ EOF
                     systemctl enable socat-mirror >/dev/null 2>&1
                     systemctl restart socat-mirror
                     
-                    echo -e "${C_VERDE} ¡CLON CREADO CON ÉXITO!${C_RESET}"
+                    echo -e "${C_VERDE} ï¿½CLON CREADO CON ï¿½XITO!${C_RESET}"
                     echo -e " El Puerto $P_NEW (TCP) ahora imita al Puerto $P_ORIG."
                     echo -e " RECUERDA: Abre el puerto $P_NEW en el Firewall Externo (Nube)."
                     sleep 3
@@ -3322,7 +3322,7 @@ EOF
     done
 }
 
-# --- NUEVA FUNCIÓN DE VERIFICACIÓN UNIVERSAL ---
+# --- NUEVA FUNCIï¿½N DE VERIFICACIï¿½N UNIVERSAL ---
 is_installed() {
     local pkg=$1
     if command -v dpkg &> /dev/null; then
@@ -3341,13 +3341,13 @@ install_xray_reality() {
     msg_center "${C_TITULO} INSTALADOR VLESS REALITY (SIN DOMINIO) ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
 
-    # 1. Verificar si Xray está instalado
+    # 1. Verificar si Xray estï¿½ instalado
     if [[ ! -f "/usr/local/bin/xray" ]]; then
         echo -e " ${C_DATO}[+] Instalando Xray Core...${C_RESET}"
         bash -c "$(curl -L https://github.com/XTLS/Xray-install/raw/main/install-release.sh)" @ install --force > /dev/null 2>&1
     fi
 
-    # 2. Datos de Configuración
+    # 2. Datos de Configuraciï¿½n
     echo -n " Puerto para Reality [Default 443]: "
     read R_PORT
     [[ -z "$R_PORT" ]] && R_PORT=443
@@ -3357,7 +3357,7 @@ install_xray_reality() {
     read R_SNI
     [[ -z "$R_SNI" ]] && R_SNI="www.microsoft.com"
 
-    # 3. Generación de Seguridad
+    # 3. Generaciï¿½n de Seguridad
     echo -e " ${C_DATO}[+] Generando llaves de cifrado X25519...${C_RESET}"
     KEYS=$(/usr/local/bin/xray x25519)
     PRIV=$(echo "$KEYS" | grep "Private" | awk '{print $3}')
@@ -3365,11 +3365,11 @@ install_xray_reality() {
     SID=$(openssl rand -hex 4)
     UUID_R=$(uuidgen)
 
-    # Guardar llave pública para el Panel Web
+    # Guardar llave pï¿½blica para el Panel Web
     mkdir -p /etc/reagens
     echo "$PUB" > /etc/reagens/reality_pub
 
-    # 4. Construcción del JSON
+    # 4. Construcciï¿½n del JSON
     cat <<EOF > /usr/local/etc/xray/config.json
 {
   "log": { "loglevel": "warning" },
@@ -3426,7 +3426,7 @@ EOF
     LINK_R="vless://$UUID_R@$IP:$R_PORT?security=reality&encryption=none&pbk=$PUB&headerType=none&fp=chrome&type=tcp&sni=$R_SNI&sid=$SID&flow=xtls-rprx-vision#REAGENS-REALITY"
 
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e "${C_VERDE} ¡REALITY INSTALADO CORRECTAMENTE!${C_RESET}"
+    echo -e "${C_VERDE} ï¿½REALITY INSTALADO CORRECTAMENTE!${C_RESET}"
     echo -e " ${C_TEXTO}Puerto: ${C_DATO}$R_PORT${C_RESET}"
     echo -e " ${C_TEXTO}Public Key: ${C_DATO}$PUB${C_RESET}"
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
@@ -3457,7 +3457,7 @@ menu_ajustes_puertos() {
         
         s_dns=$(systemctl is-active --quiet slowdns-server && echo -e "${C_VERDE}ON${C_RESET}" || echo -e "${C_ROJO}OFF${C_RESET}")
          
-        # --- DISEÑO DEL MENÚ ---
+        # --- DISEï¿½O DEL MENï¿½ ---
         echo -e " ${C_TEXTO}[1] > PYTHON SOCKET (Simple 80->22) [$s_py]${C_RESET}"
         echo -e " ${C_DATO}[2] > WS-EPRO (Avanzado Multi-Port) [$s_epro]${C_RESET}"
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
@@ -3472,7 +3472,7 @@ menu_ajustes_puertos() {
         echo -e "${C_BARRA}=====================================================${C_RESET}"
         echo -e " ${C_TEXTO}0) VOLVER AL MENU ANTERIOR${C_RESET}"
         
-        # Leemos 2 caracteres para que la opción "10" funcione correctamente
+        # Leemos 2 caracteres para que la opciï¿½n "10" funcione correctamente
         read -n 2 op_proto
         
         case $op_proto in 
@@ -3532,7 +3532,7 @@ fun_auto_ram_config() {
     echo -e " [2] Cada 6 Horas"
     echo -e " [3] Cada 12 Horas"
     echo -e " [4] Todos los dias a las 00:00"
-    echo -e " [5] Desactivar limpieza automática"
+    echo -e " [5] Desactivar limpieza automï¿½tica"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     echo -n " Opcion: "
     read tr
@@ -3561,7 +3561,7 @@ fun_auto_ram_config() {
             echo -e "${C_VERDE} Activado: Diario a las 00:00.${C_RESET}"
             ;;
         5)
-            echo -e "${C_ROJO} Limpieza automática desactivada.${C_RESET}"
+            echo -e "${C_ROJO} Limpieza automï¿½tica desactivada.${C_RESET}"
             ;;
         *) echo "Invalido" ;;
     esac
@@ -3597,14 +3597,14 @@ fun_acelerador() {
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     msg_center "${C_TITULO} ACELERADOR DE RED (BBR + SYSCTL) ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e " Aplicando configuraciones de optimización TCP..."
+    echo -e " Aplicando configuraciones de optimizaciï¿½n TCP..."
     cp /etc/sysctl.conf /etc/sysctl.conf.bak
     sed -i '/net.core.default_qdisc/d' /etc/sysctl.conf
     sed -i '/net.ipv4.tcp_congestion_control/d' /etc/sysctl.conf
     echo "net.core.default_qdisc=fq" >> /etc/sysctl.conf
     echo "net.ipv4.tcp_congestion_control=bbr" >> /etc/sysctl.conf
     sysctl -p > /dev/null 2>&1
-    echo -e "${C_VERDE} ¡Sistema Optimizado Exitosamente!${C_RESET}"
+    echo -e "${C_VERDE} ï¿½Sistema Optimizado Exitosamente!${C_RESET}"
     sleep 2
 }
 
@@ -3613,13 +3613,13 @@ fun_activar_root() {
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     msg_center "${C_TITULO} ACTIVAR ACCESO ROOT Y CAMBIAR CLAVE ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e " Esto habilitará el acceso directo por SSH al usuario 'root'"
-    echo -e " y te pedirá una nueva contraseña."
+    echo -e " Esto habilitarï¿½ el acceso directo por SSH al usuario 'root'"
+    echo -e " y te pedirï¿½ una nueva contraseï¿½a."
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
-    echo -n " Ingrese NUEVA CONTRASEÑA para ROOT: "
+    echo -n " Ingrese NUEVA CONTRASEï¿½A para ROOT: "
     read pass
     if [[ -z "$pass" ]]; then 
-        echo -e "${C_ROJO} Contraseña vacia. Cancelado.${C_RESET}"
+        echo -e "${C_ROJO} Contraseï¿½a vacia. Cancelado.${C_RESET}"
         sleep 2
         return
     fi
@@ -3634,7 +3634,7 @@ fun_activar_root() {
     service ssh restart > /dev/null 2>&1
     service sshd restart > /dev/null 2>&1
     
-    echo -e "${C_VERDE} ¡Acceso Root Activado y Clave Cambiada!${C_RESET}"
+    echo -e "${C_VERDE} ï¿½Acceso Root Activado y Clave Cambiada!${C_RESET}"
     sleep 2
 }
 
@@ -3742,7 +3742,7 @@ menu_checkuser() {
             echo -e " URL APP: ${C_TEXTO}http://${IP}:${CURR_PORT:-5432}/${C_RESET}"
             echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
             echo -e " Este sistema es compatible con:"
-            echo -e " HTTP Custom, NetMod, ePro, SSH Plus, DTunnel y más."
+            echo -e " HTTP Custom, NetMod, ePro, SSH Plus, DTunnel y mï¿½s."
             echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
             echo -e " ${C_TEXTO}[1] > DESINSTALAR${C_RESET}"
             echo -e " ${C_TEXTO}[2] > REINICIAR SERVICIO${C_RESET}"
@@ -3910,13 +3910,13 @@ submenu_fecha_hora() {
 }
 
 # ==================================================
-# GESTOR SSL REPARADO (REEMPLAZA TU FUNCIÓN ANTIGUA)
+# GESTOR SSL REPARADO (REEMPLAZA TU FUNCIï¿½N ANTIGUA)
 # ==================================================
 # ==================================================
 # GESTOR SSL MULTIVERSAL (UBUNTU/DEBIAN/CENTOS/ALMA/ROCKY)
 # ==================================================
 # ==================================================
-# GESTOR SSL MULTIVERSAL - VERSIÓN ULTRA-COMPATIBLE
+# GESTOR SSL MULTIVERSAL - VERSIï¿½N ULTRA-COMPATIBLE
 # ==================================================
 fun_cert_manager() {
     clear
@@ -3945,7 +3945,7 @@ fun_cert_manager() {
         case $op_ssl in
             1)
                 clear
-                echo -e " ${C_DATO}[+] Preparando entorno de validación...${C_RESET}"
+                echo -e " ${C_DATO}[+] Preparando entorno de validaciï¿½n...${C_RESET}"
                 
                 # 1. INSTALAR DEPENDENCIAS Y ACTIVAR CRON
                 if [[ -f /etc/redhat-release ]]; then
@@ -3976,7 +3976,7 @@ fun_cert_manager() {
                 [[ -z "$DOMINIO" ]] && continue
 
                 # 3. LIMPIEZA AGRESIVA DEL PUERTO 80
-                echo -e " ${C_DATO}[!] Forzando liberación del puerto 80...${C_RESET}"
+                echo -e " ${C_DATO}[!] Forzando liberaciï¿½n del puerto 80...${C_RESET}"
                 systemctl stop xray v2ray nginx apache2 httpd rvp-panel stunnel4 &>/dev/null
                 fuser -k 80/tcp &>/dev/null
                 fuser -k 80/tcp &>/dev/null # Doble limpieza
@@ -3988,10 +3988,10 @@ fun_cert_manager() {
                     curl https://get.acme.sh | sh -s email=admin@$DOMINIO &>/dev/null
                 fi
                 
-                # 5. VALIDACIÓN (FORZANDO IPV4 PARA EVITAR ERRORES DE RED)
+                # 5. VALIDACIï¿½N (FORZANDO IPV4 PARA EVITAR ERRORES DE RED)
                 echo -e " ${C_VERDE}[+] Solicitando a Let's Encrypt...${C_RESET}"
                 "$ACME_BIN" --set-default-ca --server letsencrypt &>/dev/null
-                # Añadimos --listen-v4 para evitar problemas con IPv6 mal configurados
+                # Aï¿½adimos --listen-v4 para evitar problemas con IPv6 mal configurados
                 "$ACME_BIN" --issue -d "$DOMINIO" --standalone --keylength ec-256 --force --listen-v4
 
                 # REINTENTO CON ZEROSSL SI FALLA
@@ -4001,16 +4001,16 @@ fun_cert_manager() {
                     "$ACME_BIN" --issue -d "$DOMINIO" --standalone --server zerossl --keylength ec-256 --force --listen-v4
                 fi
 
-                # 6. INSTALACIÓN FINAL
+                # 6. INSTALACIï¿½N FINAL
                 if [[ -f "$HOME/.acme.sh/${DOMINIO}_ecc/${DOMINIO}.cer" ]]; then
                     mkdir -p "$CERT_DIR"
                     "$ACME_BIN" --installcert -d "$DOMINIO" --ecc \
                         --fullchain-file "$CERT_DIR/public.crt" \
                         --key-file "$CERT_DIR/private.key" &>/dev/null
                     chmod 644 "$CERT_DIR"/*
-                    echo -e "${C_VERDE} ¡CERTIFICADO GENERADO EXITOSAMENTE!${C_RESET}"
+                    echo -e "${C_VERDE} ï¿½CERTIFICADO GENERADO EXITOSAMENTE!${C_RESET}"
                 else
-                    echo -e "${C_ROJO} [X] ERROR CRITICO: La validación falló.${C_RESET}"
+                    echo -e "${C_ROJO} [X] ERROR CRITICO: La validaciï¿½n fallï¿½.${C_RESET}"
                     echo -e " ${C_DATO}CAUSA PROBABLE:${C_RESET} Si usas Google Cloud, AWS, Azure u Oracle,"
                     echo -e " debes abrir el PUERTO 80 en el panel de tu proveedor (Security Groups)."
                 fi
@@ -4055,7 +4055,7 @@ fun_adblock_manager() {
                 CNT=$(wc -l < /etc/reagens/adblock.hosts)
                 INFO_L="Dominios en Blacklist: ${C_DATO}$CNT${C_RESET}"
             else
-                INFO_L="Lista vacía."
+                INFO_L="Lista vacï¿½a."
             fi
         else
             STATUS_ADB="${C_ROJO}DETENIDO / NO INSTALADO${C_RESET}"
@@ -4119,7 +4119,7 @@ EOF
                 fun_save_iptables >/dev/null 2>&1
 
                 echo -e "${C_VERDE} ADBLOCK ACTIVADO.${C_RESET}"
-                echo -e " La publicidad web será eliminada a nivel de servidor."
+                echo -e " La publicidad web serï¿½ eliminada a nivel de servidor."
                 sleep 3
                 ;;
             2)
@@ -4324,12 +4324,12 @@ fun_seguridad_blindaje() {
     msg_center "${C_TITULO} BLINDAJE DE ARCHIVOS ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     echo -e " Bloquea acceso a carpetas sensibles para usuarios no-root."
-    echo -n " ¿Aplicar? (s/n): "
+    echo -n " ï¿½Aplicar? (s/n): "
     read conf
     if [[ "$conf" == "s" ]]; then
         chmod 700 /etc/reagens /etc/reagens/users /etc/reagens/bot /etc/hysteria /etc/slowdns /etc/udp-custom
         chmod 600 /etc/reagens/bot/reagens_bot.py /etc/hysteria/config.yaml /usr/local/etc/xray/config.json
-        echo -e "${C_VERDE} ¡Sistema Blindado!${C_RESET}"; sleep 2
+        echo -e "${C_VERDE} ï¿½Sistema Blindado!${C_RESET}"; sleep 2
     fi
 }
 
@@ -4419,7 +4419,7 @@ fun_backup_restore() {
             
             # Restaurar Usuarios del Sistema (CUIDADO)
             # Solo restauramos si el usuario confirma, es delicado.
-            echo -n " ¿Restaurar usuarios SSH del sistema? (s/n): "
+            echo -n " ï¿½Restaurar usuarios SSH del sistema? (s/n): "
             read rusr
             if [[ "$rusr" == "s" ]]; then
                 cp /root/backup_reagens/shadow_bkp /etc/shadow
@@ -4504,9 +4504,9 @@ fun_deep_clean() {
     echo -e "${C_BARRA}=====================================================${C_RESET}"
     msg_center "${C_TITULO} PROTOCOLO DE BORRADO ABSOLUTO ${C_RESET}"
     echo -e "${C_BARRA}=====================================================${C_RESET}"
-    echo -e " ${C_ROJO}[!] ADVERTENCIA:${C_RESET} Se eliminarán todos los usuarios,"
+    echo -e " ${C_ROJO}[!] ADVERTENCIA:${C_RESET} Se eliminarï¿½n todos los usuarios,"
     echo -e " servicios, puertos, bases de datos y comandos."
-    echo -e " La VPS volverá a su estado original de fábrica."
+    echo -e " La VPS volverï¿½ a su estado original de fï¿½brica."
     echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
     echo -n " Escribe 'BORRAR-SISTEMA' para confirmar: "
     read confirm
@@ -4523,7 +4523,7 @@ fun_deep_clean() {
                     pkill -u "$user" >/dev/null 2>&1
                     userdel --force "$user" >/dev/null 2>&1
                     rm -rf "/home/$user" >/dev/null 2>&1
-                    # Limpiamos su rastro en la DB de tráfico
+                    # Limpiamos su rastro en la DB de trï¿½fico
                     sed -i "/^$user|/d" "$DB_TRAFFIC"
                 done < "$db"
             fi
@@ -4550,7 +4550,7 @@ fun_deep_clean() {
         echo "" > /etc/motd
         crontab -r >/dev/null 2>&1
 
-        echo -e "\n${C_VERDE} [OK] SISTEMA ELIMINADO AL 100%. NINGÚN RASTRO QUEDÓ.${C_RESET}"
+        echo -e "\n${C_VERDE} [OK] SISTEMA ELIMINADO AL 100%. NINGï¿½N RASTRO QUEDï¿½.${C_RESET}"
         sleep 3
         exit 0
     else
@@ -4559,7 +4559,7 @@ fun_deep_clean() {
     fi
 }
 
-# --- FUNCION DE LIMPIEZA (Pégala aquí, justo antes del menú) ---
+# --- FUNCION DE LIMPIEZA (Pï¿½gala aquï¿½, justo antes del menï¿½) ---
 fun_limpiar_logs() {
     clear
     msg_center " LIMPIEZA DE SISTEMA "
@@ -4584,7 +4584,7 @@ fun_limpiar_logs() {
     apt-get clean >/dev/null 2>&1
     apt-get autoremove -y >/dev/null 2>&1
     
-    echo -e "${C_VERDE} ¡Logs y Basura Vaciados Exitosamente!${C_RESET}"
+    echo -e "${C_VERDE} ï¿½Logs y Basura Vaciados Exitosamente!${C_RESET}"
     sleep 2
 }
 
@@ -4635,12 +4635,12 @@ fun_instalar_panel_web() {
         
         echo -e " ESTADO ACTUAL: $ESTADO_WEB"
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
-        echo -e " ${C_DATO}[1] > REINSTALAR (APLICAR NUEVO DISEÑO)${C_RESET}"
+        echo -e " ${C_DATO}[1] > REINSTALAR (APLICAR NUEVO DISEï¿½O)${C_RESET}"
         echo -e " ${C_DATO}[2] > DESINSTALAR COMPLETAMENTE${C_RESET}"
         echo -e "${C_BARRA}-----------------------------------------------------${C_RESET}"
         echo -e " ${C_TEXTO}[3] > INICIAR SERVICIO${C_RESET}"
         echo -e " ${C_TEXTO}[4] > DETENER SERVICIO${C_RESET}"
-        echo -e " ${C_TEXTO}[5] > CAMBIAR CONTRASEÑA ADMIN${C_RESET}"
+        echo -e " ${C_TEXTO}[5] > CAMBIAR CONTRASEï¿½A ADMIN${C_RESET}"
         echo -e "${C_BARRA}=====================================================${C_RESET}"
         echo -e " ${C_TEXTO}0) VOLVER${C_RESET}"
         echo -n " Opcion: "
@@ -5439,7 +5439,7 @@ def settings():
     def_ssh_p = open(DEFAULT_SSH_PASS).read().strip() if os.path.exists(DEFAULT_SSH_PASS) else ""
     banner_c = open(BANNER_FILE).read() if os.path.exists(BANNER_FILE) else ""
     
-    # 2. DISEÑO UNIFICADO
+    # 2. DISEï¿½O UNIFICADO
     h = f"""
     <div class="grid-form">
         <div class="card"><h3>Admin Panel</h3><form method="POST"><input type="hidden" name="type" value="admin"><label>Usuario</label><input name="u"><label>Password</label><input name="p"><button class="btn btn-org">Actualizar</button></form></div>
@@ -5522,7 +5522,7 @@ def u_renew(u):
     try:
         # --- CONFIGURACION BASE DE LA RECARGA ---
         base_days = 30
-        base_mb_limit = 0 # Se obtendrá de la base de datos
+        base_mb_limit = 0 # Se obtendrï¿½ de la base de datos
         
         # 1. OBTENER DATOS ACTUALES (MB y FECHA)
         current_used_mb = 0
@@ -6181,7 +6181,7 @@ fun_update_system() {
     echo -e " ${C_DATO}[+] Descargando instalador oficial...${C_RESET}"
     
     # 1. Descargar el instalador
-    wget -O /root/setup.sh "https://gitlab.com/reagensjp/reagens-scritp/-/raw/main/setup.sh" >/dev/null 2>&1
+    wget -O /root/setup.sh "https://raw.githubusercontent.com/Configuracao/HirvipHB/main/setup.sh" >/dev/null 2>&1
     chmod +x /root/setup.sh
     
     # 2. LIMPIEZA QUIRURGICA (Elimina el error ^M / bad interpreter)
