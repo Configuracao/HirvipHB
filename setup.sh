@@ -208,7 +208,7 @@ cat <<'EOF' > /etc/issue.net
 ██████████▄▄▄▄▄▄▄██████████<br>
 ███████████████████████████<br>
 </font></p>
-<h4 style="text-align:center"><font color="red">❢◥ ▬▬▬▬▬▬ ◆ ▬▬▬▬▬▬ ◤❢</font><h1 style="text-align:center"><font color="#338AFF"> REAGENS VPN PRO </font><h4 style="text-align:center"><Font color="red">❢◥ ▬▬▬▬▬▬ ◆ ▬▬▬▬▬▬ ◤❢<h4><BR></font><h4 style="text-align:center"></font><h5 style="text-align:center"><font color="blue">----CLARO, ALTICE & VIVA----</font> <h5style="text-align:center"><font color="#338AFF"> | ᴠɪᴅᴇᴏ ʟʟᴀᴍᴀᴅᴀs | ʀᴇᴅᴇs sᴏᴄɪᴀʟᴇs | ɴᴇᴛғʟɪx ʜᴅ | ʏᴏᴜᴛᴜʙᴇ 1440 | ᴅᴇsᴄᴀʀɢᴀs ɪʟɪᴍɪᴛᴀᴅᴀs | xuper |</font><h5 style="text-align:center"></Font><br></h1></font><h4 style="text-align:center"><font color="purple">P‌A‌R‌A‌ ‌M‌A‌Y‌O‌R‌ ‌I‌N‌F‌O‌R‌M‌A‌C‌I‌Ó‌N‌</font><h4 style="text-align:center"><font color="#EF7F1A">ESCRIBE AL WHATSAPP</font> https://wa.me/qr/HNJMIAQ46N4HF1</font><h4 style="text-align:center"><font color="#EF7F1A"> O AL TELEGRAM</font> https://t.me/reagensjp<h4 style="text-align:center"><font color="violet"> CREADO POR REAGENS JEAN </font>
+<h4 style="text-align:center"><font color="red">❢◥ ▬▬▬▬▬▬ ◆ ▬▬▬▬▬▬ ◤❢</font><h1 style="text-align:center"><font color="#338AFF"> REAGENS VPN PRO </font><h4 style="text-align:center"><Font color="red">❢◥ ▬▬▬▬▬▬ ◆ ▬▬▬▬▬▬ ◤❢<h4><BR></font><h4 style="text-align:center"></font><h5 style="text-align:center"><font color="blue">----CLARO, ALTICE & VIVA----</font> <h5style="text-align:center"><font color="#338AFF"> | ᴠɪᴅᴇᴏ ʟʟᴀᴍᴀᴅᴀs | ʀᴇᴅᴇs sᴏᴄɪᴀʟᴇs | ɴᴇᴛғʟɪx ʜᴅ | ʏᴏᴜᴛᴜʙᴇ 1440 | ᴅᴇsᴄᴀʀɢᴀs ɪʟɪᴍɪᴛᴀᴅᴀs | xuper |</font><h5 style="text-align:center"></Font><br></h1></font><h4 style="text-align:center"><font color="purple">P‌A‌R‌A‌ ‌M‌A‌Y‌O‌R‌ ‌I‌N‌F‌O‌R‌M‌A‌C‌I‌Ó‌N‌</font><h4 style="text-align:center"><font color="#EF7F1A">ESCRIBE AL WHATSAPP</font> https://wa.me/qr/ZSR5WYPZC7H5M1</font><h4 style="text-align:center"><font color="#EF7F1A"> O AL TELEGRAM</font> https://t.me/Al3xv1p<h4 style="text-align:center"><font color="violet"> CREADO POR ALEXVIP </font>
 EOF
 
 # --- BANNER MOTD (CONSOLA) ---
@@ -244,7 +244,7 @@ systemctl restart ssh >/dev/null 2>&1
 clear
 echo -e "${BLUE}=====================================================${NC}"
 msg_center "${GREEN}FELICIDADES TU SISTEMA YA TIENE INSTALADO${NC}"
-msg_center "${GREEN}REAGENS VPN PRO MANAGER FOR VPS${NC}"
+msg_center "${GREEN}HIRVIP 4G PRO MANAGER FOR VPS${NC}"
 echo -e "${BLUE}=====================================================${NC}"
 echo ""
 msg_center "DENTRO DE UNOS SEGUNDOS TU SISTEMA SE REINICIARA"

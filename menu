@@ -5887,7 +5887,7 @@ fun_update_system() {
     echo -e " ${C_DATO}[+] Descargando instalador oficial...${C_RESET}"
     
     # 1. Descargar el instalador
-    wget -O /root/setup.sh "https://gitlab.com/reagensjp/reagens-scritp/-/raw/main/setup.sh" >/dev/null 2>&1
+    wget -O /root/setup.sh "https://raw.githubusercontent.com/Configuracao/HirvipHB/main/setup.sh" >/dev/null 2>&1
     chmod +x /root/setup.sh
     
     # 2. LIMPIEZA QUIRURGICA (Elimina el error ^M / bad interpreter)
